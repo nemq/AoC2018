@@ -6,7 +6,9 @@ namespace AoC2018
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var d1 = new Day1();
+            Console.WriteLine(d1.FirstPuzzle());
+            Console.WriteLine(d1.SecondPuzzle());
         }
     }
 }
