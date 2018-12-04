@@ -10,13 +10,13 @@ namespace AoC2018
     {
         public string FirstPuzzle()
         {
-            var freqChanges = ReadFreqChanges(@"C:\Projects\AoC2018\AoC2018\Day1\input");
+            var freqChanges = ReadFreqChanges(Utilities.InputPath(1));
             return freqChanges.Sum().ToString();
         }
 
         public string SecondPuzzle()
         {
-            var freqChanges = ReadFreqChanges(@"C:\Projects\AoC2018\AoC2018\Day1\input");
+            var freqChanges = ReadFreqChanges(Utilities.InputPath(1));
             var freq = 0;
             var usedFreqs = new HashSet<int>();
             usedFreqs.Add(freq);
