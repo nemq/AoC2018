@@ -95,16 +95,16 @@ namespace AoC2018
 
         public class Claim
         {
-            private static string pattern = @"#(?<id>\d+)\s@\s" +
+            private static readonly string Pattern = @"#(?<id>\d+)\s@\s" +
                                     @"(?<left>\d+),(?<top>\d+):\s" +
                                     @"(?<width>\d+)x(?<height>\d+)";
-            private static Regex regex = new Regex(pattern);
+            private static readonly Regex Regex = new Regex(Pattern);
 
             public delegate void CellHandler(Tuple<int, int> cell);
 
             public Claim(string claim)
             {
-                var match = regex.Match(claim);
+                var match = Regex.Match(claim);
                 if (!match.Success)
                 {
                     throw new ArgumentException("Invalid claim: " + claim);
