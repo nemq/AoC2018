@@ -58,4 +58,51 @@ namespace AoC2018Tests
             Assert.AreEqual(Day4.Record.MessageType.WakesUp, record.Type);
         }
     }
+
+    public class Day5Tests
+    {
+        [Test]
+        public void Reacts()
+        {
+            Assert.IsTrue(Day5.Polymer.Reacts('a', 'A'));
+            Assert.IsTrue(Day5.Polymer.Reacts('A', 'a'));
+            Assert.IsTrue(Day5.Polymer.Reacts('z', 'Z'));
+            Assert.IsTrue(Day5.Polymer.Reacts('Z', 'z'));
+            Assert.IsFalse(Day5.Polymer.Reacts('a', 'a'));
+            Assert.IsFalse(Day5.Polymer.Reacts('A', 'A'));
+            Assert.IsFalse(Day5.Polymer.Reacts('a', 'b'));
+            Assert.IsFalse(Day5.Polymer.Reacts('A', 'B'));
+            Assert.IsFalse(Day5.Polymer.Reacts('z', 'z'));
+            Assert.IsFalse(Day5.Polymer.Reacts('Z', 'Z'));
+        }
+
+        [Test]
+        public void SingleReduce()
+        {
+            var reduced = Day5.Polymer.Reduce("dabAcCaCBAcCcaDA");
+            Assert.AreEqual("dabAaCBAcaDA", reduced);
+            reduced = Day5.Polymer.Reduce(reduced);
+            Assert.AreEqual("dabCBAcaDA", reduced);
+        }
+
+        [Test]
+        public void PolymerReduce()
+        {
+            var polymer = new Day5.Polymer("dabAcCaCBAcCcaDA");
+            polymer.Reduce();
+            Assert.AreEqual("dabCBAcaDA", polymer.Units);
+        }
+
+        [Test]
+        public void RemoveUnit()
+        {
+            var polymer = new Day5.Polymer("dabAcCaCBAcCcaDA");
+            polymer.RemoveUnit('a');
+            Assert.AreEqual("dbcCCBcCcD", polymer.Units);
+
+            polymer = new Day5.Polymer("dabAcCaCBAcCcaDA");
+            polymer.RemoveUnit('A');
+            Assert.AreEqual("dbcCCBcCcD", polymer.Units);
+        }
+    }
 }

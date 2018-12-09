@@ -22,6 +22,10 @@ namespace AoC2018
             var d4 = new Day4();
             Console.WriteLine(d4.FirstPuzzle());
             Console.WriteLine(d4.SecondPuzzle());
+            Console.WriteLine("Day5");
+            var d5 = new Day5();
+            Console.WriteLine(d5.FirstPuzzle());
+            Console.WriteLine(d5.SecondPuzzle());
         }
     }
 }
