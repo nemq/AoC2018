@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace AoC2018
+namespace AoC2018.Day4
 {
     using GuardId = UInt32;
     using MinutesHistogram = Dictionary<int, int>;
@@ -93,75 +93,75 @@ namespace AoC2018
 
             return records;
         }
+    }
 
-        struct Nap
+    struct Nap
+    {
+        public int StartMin;
+        public int StopMin;
+        public int Duration;
+    }
+
+    public class Record
+    {
+        //[1518-11-12 23:47] Guard #2777 begins shift"
+        private static readonly string RecordPattern =
+            @"\[(?<year>\d+)\-" +
+            @"(?<month>\d+)\-" +
+            @"(?<day>\d+)\s" +
+            @"(?<hour>\d+):" +
+            @"(?<minute>\d+)\]\s" +
+            @"(?<message>[\w\s#]+)";
+        private static readonly Regex RecordRegex = new Regex(RecordPattern);
+        private static readonly string WakeUpMessage = "wakes up";
+        private static readonly string FallAsleepMessage = "falls asleep";
+        private static readonly string BeginShiftPattern = @"Guard #(?<id>\d+) begins shift";
+        private static readonly Regex BeginShiftRegex = new Regex(BeginShiftPattern);
+
+        public enum MessageType { BeginShift, FallAsleep, WakesUp };
+        public Record(string record)
         {
-            public int StartMin;
-            public int StopMin;
-            public int Duration;
-        }
-
-        public class Record
-        {
-            //[1518-11-12 23:47] Guard #2777 begins shift"
-            private static readonly string RecordPattern =
-                @"\[(?<year>\d+)\-" +
-                @"(?<month>\d+)\-" +
-                @"(?<day>\d+)\s" +
-                @"(?<hour>\d+):" +
-                @"(?<minute>\d+)\]\s" +
-                @"(?<message>[\w\s#]+)";
-            private static readonly Regex RecordRegex = new Regex(RecordPattern);
-            private static readonly string WakeUpMessage = "wakes up";
-            private static readonly string FallAsleepMessage = "falls asleep";
-            private static readonly string BeginShiftPattern = @"Guard #(?<id>\d+) begins shift";
-            private static readonly Regex BeginShiftRegex = new Regex(BeginShiftPattern);
-
-            public enum MessageType { BeginShift, FallAsleep, WakesUp };
-            public Record(string record)
+            var match = RecordRegex.Match(record);
+            if (!match.Success)
             {
-                var match = RecordRegex.Match(record);
-                if (!match.Success)
-                {
-                    throw new ArgumentException("Invalid record: " + record);
-                }
-
-                var year = int.Parse(match.Groups["year"].Value);
-                var month = int.Parse(match.Groups["month"].Value);
-                var day = int.Parse(match.Groups["day"].Value);
-                var hour = int.Parse(match.Groups["hour"].Value);
-                var minute = int.Parse(match.Groups["minute"].Value);
-                Message = match.Groups["message"].Value;
-                ParseMessage(Message);
-                Date = new DateTime(year, month, day, hour, minute, 0);
+                throw new ArgumentException("Invalid record: " + record);
             }
 
-            private void ParseMessage(string message)
-            {
-                if (BeginShiftRegex.IsMatch(message))
-                {
-                    Type = MessageType.BeginShift;
-                    var id = BeginShiftRegex.Match(message).Groups["id"].Value;
-                    GuardId = int.Parse(id);
-                }
-                else if (message.Equals(FallAsleepMessage))
-                {
-                    Type = MessageType.FallAsleep;
-                }
-                else if (message.Equals(WakeUpMessage))
-                {
-                    Type = MessageType.WakesUp;
-                }
-                else
-                {
-                    throw new ArgumentException("Invalid message: " + message);
-                }
-            }
-
-            public string Message { get; set; }
-            public MessageType Type { get; set; }
-            public int GuardId { get; set; }
-            public DateTime Date { get; set; }
+            var year = int.Parse(match.Groups["year"].Value);
+            var month = int.Parse(match.Groups["month"].Value);
+            var day = int.Parse(match.Groups["day"].Value);
+            var hour = int.Parse(match.Groups["hour"].Value);
+            var minute = int.Parse(match.Groups["minute"].Value);
+            Message = match.Groups["message"].Value;
+            ParseMessage(Message);
+            Date = new DateTime(year, month, day, hour, minute, 0);
         }
+
+        private void ParseMessage(string message)
+        {
+            if (BeginShiftRegex.IsMatch(message))
+            {
+                Type = MessageType.BeginShift;
+                var id = BeginShiftRegex.Match(message).Groups["id"].Value;
+                GuardId = int.Parse(id);
+            }
+            else if (message.Equals(FallAsleepMessage))
+            {
+                Type = MessageType.FallAsleep;
+            }
+            else if (message.Equals(WakeUpMessage))
+            {
+                Type = MessageType.WakesUp;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid message: " + message);
+            }
+        }
+
+        public string Message { get; set; }
+        public MessageType Type { get; set; }
+        public int GuardId { get; set; }
+        public DateTime Date { get; set; }
     }
 }

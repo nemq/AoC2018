@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace AoC2018
+namespace AoC2018.Day5
 {
     public class Day5 : IDay
     {
@@ -36,73 +36,72 @@ namespace AoC2018
 
             return minLength.ToString();
         }
-
-        public class Polymer
+    }
+    public class Polymer
+    {
+        private static readonly int CaseOffset = 'a' - 'A';
+        public Polymer(string data)
         {
-            private static readonly int CaseOffset = 'a' - 'A';
-            public Polymer(string data)
-            {
-                Units = data;
-            }
+            Units = data;
+        }
 
-            public void Reduce()
+        public void Reduce()
+        {
+            while (true)
             {
-                while (true)
+                var reducedUnits = Reduce(Units);
+                if (reducedUnits.Length == Units.Length)
                 {
-                    var reducedUnits = Reduce(Units);
-                    if (reducedUnits.Length == Units.Length)
-                    {
-                        break;
-                    }
-                    Units = reducedUnits;
+                    break;
                 }
+                Units = reducedUnits;
             }
+        }
 
-            public void RemoveUnit(char unit)
-            {
-                Units = Units.Replace(unit.ToString(), "", StringComparison.InvariantCultureIgnoreCase);
-            } 
+        public void RemoveUnit(char unit)
+        {
+            Units = Units.Replace(unit.ToString(), "", StringComparison.InvariantCultureIgnoreCase);
+        }
 
-            public static string Reduce(string data)
+        public static string Reduce(string data)
+        {
+            var sb = new StringBuilder();
+            int lastChunkEnd = 0;
+            for (int pos = 0; pos < data.Length - 1;)
             {
-                var sb = new StringBuilder();
-                int lastChunkEnd = 0;
-                for (int pos = 0; pos < data.Length - 1; )
+                if (Reacts(data[pos], data[pos + 1]))
                 {
-                    if (Reacts(data[pos], data[pos+1]))
-                    {
-                        sb.Append(data.Substring(lastChunkEnd, pos - lastChunkEnd));
-                        pos += 2;
-                        lastChunkEnd = pos; 
-                    }
-                    else
-                    {
-                        pos += 1;
-                    }
-                }
-
-                sb.Append(data.Substring(lastChunkEnd));
-                return sb.ToString();
-            }
-            
-            public static bool Reacts(char firstUnit, char secondUnit)
-            {
-                if (firstUnit > secondUnit)
-                {
-                    return firstUnit - secondUnit == CaseOffset;
+                    sb.Append(data.Substring(lastChunkEnd, pos - lastChunkEnd));
+                    pos += 2;
+                    lastChunkEnd = pos;
                 }
                 else
                 {
-                    return secondUnit - firstUnit == CaseOffset;
+                    pos += 1;
                 }
             }
 
-            public Polymer Clone()
-            {
-                return new Polymer(Units);
-            }
-
-            public string Units { get; set; }
+            sb.Append(data.Substring(lastChunkEnd));
+            return sb.ToString();
         }
+
+        public static bool Reacts(char firstUnit, char secondUnit)
+        {
+            if (firstUnit > secondUnit)
+            {
+                return firstUnit - secondUnit == CaseOffset;
+            }
+            else
+            {
+                return secondUnit - firstUnit == CaseOffset;
+            }
+        }
+
+        public Polymer Clone()
+        {
+            return new Polymer(Units);
+        }
+
+        public string Units { get; set; }
     }
 }

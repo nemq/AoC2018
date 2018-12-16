@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Linq;
 
-namespace AoC2018
+namespace AoC2018.Day1
 {
     class Day1 : IDay
     {

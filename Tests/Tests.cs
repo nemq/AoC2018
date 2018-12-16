@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using AoC2018;
 
 namespace AoC2018Tests
 {
@@ -9,7 +8,7 @@ namespace AoC2018Tests
         public void ParseClaim()
         {
             var line = "#342 @ 430,394: 17x16";
-            var claim = new Day3.Claim(line);
+            var claim = new AoC2018.Day3.Claim(line);
             Assert.AreEqual(claim.Id, 342);
             Assert.AreEqual(claim.Left, 430);
             Assert.AreEqual(claim.Top, 394);
@@ -24,7 +23,7 @@ namespace AoC2018Tests
         public void ParseRecord()
         {
             var line = @"[1518-11-12 23:47] Guard #2777 begins shift";
-            var record = new Day4.Record(line);
+            var record = new AoC2018.Day4.Record(line);
             Assert.AreEqual(1518, record.Date.Year);
             Assert.AreEqual(11, record.Date.Month);
             Assert.AreEqual(12, record.Date.Day);
@@ -37,16 +36,16 @@ namespace AoC2018Tests
         public void FallAsleepMessage()
         {
             var line = @"[1518-05-22 00:01] falls asleep";
-            var record = new Day4.Record(line);
-            Assert.AreEqual(Day4.Record.MessageType.FallAsleep, record.Type);
+            var record = new AoC2018.Day4.Record(line);
+            Assert.AreEqual(AoC2018.Day4.Record.MessageType.FallAsleep, record.Type);
         }
 
         [Test]
         public void BeginShiftMessage()
         {
             var line = @"[1518-10-23 23:59] Guard #2503 begins shift";
-            var record = new Day4.Record(line);
-            Assert.AreEqual(Day4.Record.MessageType.BeginShift, record.Type);
+            var record = new AoC2018.Day4.Record(line);
+            Assert.AreEqual(AoC2018.Day4.Record.MessageType.BeginShift, record.Type);
             Assert.AreEqual(2503, record.GuardId);
         }
 
@@ -54,8 +53,8 @@ namespace AoC2018Tests
         public void WakeUpMessage()
         {
             var line = @"[1518-08-27 00:58] wakes up";
-            var record = new Day4.Record(line);
-            Assert.AreEqual(Day4.Record.MessageType.WakesUp, record.Type);
+            var record = new AoC2018.Day4.Record(line);
+            Assert.AreEqual(AoC2018.Day4.Record.MessageType.WakesUp, record.Type);
         }
     }
 
@@ -64,31 +63,31 @@ namespace AoC2018Tests
         [Test]
         public void Reacts()
         {
-            Assert.IsTrue(Day5.Polymer.Reacts('a', 'A'));
-            Assert.IsTrue(Day5.Polymer.Reacts('A', 'a'));
-            Assert.IsTrue(Day5.Polymer.Reacts('z', 'Z'));
-            Assert.IsTrue(Day5.Polymer.Reacts('Z', 'z'));
-            Assert.IsFalse(Day5.Polymer.Reacts('a', 'a'));
-            Assert.IsFalse(Day5.Polymer.Reacts('A', 'A'));
-            Assert.IsFalse(Day5.Polymer.Reacts('a', 'b'));
-            Assert.IsFalse(Day5.Polymer.Reacts('A', 'B'));
-            Assert.IsFalse(Day5.Polymer.Reacts('z', 'z'));
-            Assert.IsFalse(Day5.Polymer.Reacts('Z', 'Z'));
+            Assert.IsTrue(AoC2018.Day5.Polymer.Reacts('a', 'A'));
+            Assert.IsTrue(AoC2018.Day5.Polymer.Reacts('A', 'a'));
+            Assert.IsTrue(AoC2018.Day5.Polymer.Reacts('z', 'Z'));
+            Assert.IsTrue(AoC2018.Day5.Polymer.Reacts('Z', 'z'));
+            Assert.IsFalse(AoC2018.Day5.Polymer.Reacts('a', 'a'));
+            Assert.IsFalse(AoC2018.Day5.Polymer.Reacts('A', 'A'));
+            Assert.IsFalse(AoC2018.Day5.Polymer.Reacts('a', 'b'));
+            Assert.IsFalse(AoC2018.Day5.Polymer.Reacts('A', 'B'));
+            Assert.IsFalse(AoC2018.Day5.Polymer.Reacts('z', 'z'));
+            Assert.IsFalse(AoC2018.Day5.Polymer.Reacts('Z', 'Z'));
         }
 
         [Test]
         public void SingleReduce()
         {
-            var reduced = Day5.Polymer.Reduce("dabAcCaCBAcCcaDA");
+            var reduced = AoC2018.Day5.Polymer.Reduce("dabAcCaCBAcCcaDA");
             Assert.AreEqual("dabAaCBAcaDA", reduced);
-            reduced = Day5.Polymer.Reduce(reduced);
+            reduced = AoC2018.Day5.Polymer.Reduce(reduced);
             Assert.AreEqual("dabCBAcaDA", reduced);
         }
 
         [Test]
         public void PolymerReduce()
         {
-            var polymer = new Day5.Polymer("dabAcCaCBAcCcaDA");
+            var polymer = new AoC2018.Day5.Polymer("dabAcCaCBAcCcaDA");
             polymer.Reduce();
             Assert.AreEqual("dabCBAcaDA", polymer.Units);
         }
@@ -96,13 +95,78 @@ namespace AoC2018Tests
         [Test]
         public void RemoveUnit()
         {
-            var polymer = new Day5.Polymer("dabAcCaCBAcCcaDA");
+            var polymer = new AoC2018.Day5.Polymer("dabAcCaCBAcCcaDA");
             polymer.RemoveUnit('a');
             Assert.AreEqual("dbcCCBcCcD", polymer.Units);
 
-            polymer = new Day5.Polymer("dabAcCaCBAcCcaDA");
+            polymer = new AoC2018.Day5.Polymer("dabAcCaCBAcCcaDA");
             polymer.RemoveUnit('A');
             Assert.AreEqual("dbcCCBcCcD", polymer.Units);
+        }
+    }
+
+    public class Day6Tests
+    {
+        private AoC2018.Day6.Grid grid;
+
+        [SetUp]
+        public void SetUp()
+        {
+            var coords = AoC2018.Day6.Day6.ReadCoords(AoC2018.Utilities.InputPath(6, true));
+            grid = new AoC2018.Day6.Grid(coords);
+        }
+
+        [Test]
+        public void ReadCoords()
+        {
+            var coords = AoC2018.Day6.Day6.ReadCoords(AoC2018.Utilities.InputPath(6, true));
+            Assert.AreEqual(6, coords.Count);
+            Assert.AreEqual(new AoC2018.Day6.Coord(1, 1), coords[0]);
+            Assert.AreEqual(new AoC2018.Day6.Coord(8, 9), coords[coords.Count - 1]);
+        }
+
+        [Test]
+        public void GridProperties()
+        {
+            Assert.AreEqual(1, grid.MinX);
+            Assert.AreEqual(1, grid.MinY);
+            Assert.AreEqual(8, grid.MaxX);
+            Assert.AreEqual(9, grid.MaxY);
+            Assert.AreEqual(15, grid.Diameter);
+        }
+
+        [Test]
+        public void InfiniteArea()
+        {
+            Assert.IsTrue(grid.HasInfiniteArea(1)); //A
+            Assert.IsTrue(grid.HasInfiniteArea(2)); //B
+            Assert.IsTrue(grid.HasInfiniteArea(3)); //C
+            Assert.IsTrue(grid.HasInfiniteArea(6)); //F
+        }
+
+        [Test]
+        public void Area()
+        {
+            Assert.AreEqual(9,grid.Area(4)); //D
+            Assert.AreEqual(17,grid.Area(5)); //E
+        }
+
+        [Test]
+        public void LaregestFiniteArea()
+        {
+            Assert.AreEqual(17, grid.LargestFiniteArea());
+        }
+
+        [Test]
+        public void TotalDist()
+        {
+            Assert.AreEqual(30, grid.TotalDists[4, 3]);
+        }
+
+        [Test]
+        public void TotalDistArea()
+        {
+            Assert.AreEqual(16, grid.TotalDistanceRegionArea(32));
         }
     }
 }
