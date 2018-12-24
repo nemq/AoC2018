@@ -169,4 +169,47 @@ namespace AoC2018Tests
             Assert.AreEqual(16, grid.TotalDistanceRegionArea(32));
         }
     }
+
+    public class Day7Tests
+    {
+        private AoC2018.Day7.Graph graph = new AoC2018.Day7.Graph();
+
+        [SetUp]
+        public void SetUp()
+        {
+            graph.ReadFromFile(AoC2018.Utilities.InputPath(7, true));
+        }
+
+        [Test]
+        public void ParseLine()
+        {
+            const string line = "Step C must be finished before step A can begin.";
+            var e = graph.ParseEdge(line);
+            Assert.IsNotNull(e);
+            Assert.AreEqual('C', e.Source);
+            Assert.AreEqual('A', e.Target);
+        }
+
+        [Test]
+        public void FindRoot()
+        {
+            var roots = graph.FindRoots();
+            Assert.AreEqual(1, roots.Count);
+            Assert.AreEqual('C', roots[0]);
+        }
+
+        [Test]
+        public void FindRoute()
+        {
+            var res = graph.FindRoute();
+            Assert.AreEqual("CABDFE", res.Item1);
+        }
+        
+        [Test]
+        public void FindRouteTime()
+        {
+            var res = graph.FindRoute(2);
+            Assert.AreEqual(258, res.Item2);
+        }
+    }
 }
