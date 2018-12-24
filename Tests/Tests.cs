@@ -212,4 +212,63 @@ namespace AoC2018Tests
             Assert.AreEqual(258, res.Item2);
         }
     }
+
+    public class Day8Tests
+    {
+        private AoC2018.Day8.Node node;
+
+        [SetUp]
+        public void SetUp()
+        {
+            var path = AoC2018.Utilities.InputPath(8, true);
+            node = AoC2018.Day8.Node.ReadFromFile(path);
+        }
+
+        [Test]
+        public void RootHeaderMetadataCount()
+        {
+            Assert.AreEqual(3, node.MetadataCount);
+        }
+
+        [Test]
+        public void RootHeaderChildCount()
+        {
+            Assert.AreEqual(2, node.ChildrenCount);
+        }
+
+        [Test]
+        public void RootMetadataCount()
+        {
+            Assert.AreEqual(3, node.Metadata.Count);
+        }
+
+        [Test]
+        public void RootChildCount()
+        {
+            Assert.AreEqual(2, node.Children.Count);
+        }
+
+        [Test]
+        public void RootChildrenHeaders()
+        {
+            var firstChild = node.Children[0];
+            Assert.AreEqual(0, firstChild.ChildrenCount);
+            Assert.AreEqual(3, firstChild.MetadataCount);
+            var secondChild = node.Children[1];
+            Assert.AreEqual(1, secondChild.ChildrenCount);
+            Assert.AreEqual(1, secondChild.MetadataCount);
+        }
+
+        [Test]
+        public void MetadataSum()
+        {
+            Assert.AreEqual(138, node.MetadataSum());
+        }
+
+        [Test]
+        public void Value()
+        {
+            Assert.AreEqual(66, node.Value());
+        }
+    }
 }

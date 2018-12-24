@@ -6,7 +6,6 @@ namespace AoC2018
     {
         static void Main(string[] args)
         {
-
             var days = new IDay[] {
                 new Day1.Day1(),
                 new Day2.Day2(),
@@ -14,7 +13,8 @@ namespace AoC2018
                 new Day4.Day4(),
                 new Day5.Day5(),
                 new Day6.Day6(),
-                new Day7.Day7()
+                new Day7.Day7(),
+                new Day8.Day8()
             };
 
             for (int i = 0; i < days.Length; i++)
